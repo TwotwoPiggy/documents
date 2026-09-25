@@ -9,34 +9,34 @@
 
 ```mermaid
 flowchart TD
-    User([前端用户 / 客户端]) -->|1. 自然语言交互 (携带 SessionId, ModelId, BusinessCode)| API[通用统一接入层 GenericAgentController]
+    User["前端用户 / 客户端"] -->|"1. 自然语言交互 (携带 SessionId, ModelId, BusinessCode)"| API["通用统一接入层 GenericAgentController"]
     
-    subgraph Infrastructure [通用基础设施底座]
-        API --> Factory[企业级 Agent 工厂 EnterpriseAgentFactory]
-        API --> SessionMgr[会话持久化管理器 ISessionStorage]
-        API --> Tracker[Token 用量与成本跟踪器 SessionUsageTracker]
+    subgraph Infrastructure["通用基础设施底座"]
+        API --> Factory["企业级 Agent 工厂 EnterpriseAgentFactory"]
+        API --> SessionMgr["会话持久化管理器 ISessionStorage"]
+        API --> Tracker["Token 用量与成本跟踪器 SessionUsageTracker"]
         
-        Factory --> Router[多模型路由器 Multi-LLM Keyed Services]
-        Router --> GPT4o[Azure OpenAI / GPT-4o]
-        Router --> Mini[GPT-4o-mini]
-        Router --> DeepSeek[DeepSeek V3 / R1]
-        Router --> LocalLLM[内网本地私有模型 Ollama / Qwen]
+        Factory --> Router["多模型路由器 Multi-LLM Keyed Services"]
+        Router --> GPT4o["Azure OpenAI / GPT-4o"]
+        Router --> Mini["GPT-4o-mini"]
+        Router --> DeepSeek["DeepSeek V3 / R1"]
+        Router --> LocalLLM["内网本地私有模型 Ollama / Qwen"]
     end
 
-    subgraph BusinessPlugins [业务插件层 (即插即用)]
-        Factory --> PluginRegistry{业务插件注册表}
-        PluginRegistry -->|businessCode = 'quotation'| QuotationPlugin[报价单业务插件]
-        PluginRegistry -->|businessCode = 'expense'| ExpensePlugin[费用报销业务插件]
-        PluginRegistry -->|businessCode = 'ticket'| TicketPlugin[工单流转业务插件]
+    subgraph BusinessPlugins["业务插件层 (即插即用)"]
+        Factory --> PluginRegistry{"业务插件注册表"}
+        PluginRegistry -->|"businessCode = quotation"| QuotationPlugin["报价单业务插件"]
+        PluginRegistry -->|"businessCode = expense"| ExpensePlugin["费用报销业务插件"]
+        PluginRegistry -->|"businessCode = ticket"| TicketPlugin["工单流转业务插件"]
     end
 
-    subgraph ExistingAPIs [现有业务系统与定价引擎]
-        QuotationPlugin -->|Tools 调用| ERP_CRM[现有 ERP / CRM API]
-        ExpensePlugin -->|Tools 调用| Finance[现有财务系统 API]
-        TicketPlugin -->|Tools 调用| ITSM[现有工单系统 API]
+    subgraph ExistingAPIs["现有业务系统与定价引擎"]
+        QuotationPlugin -->|"Tools 调用"| ERP_CRM["现有 ERP / CRM API"]
+        ExpensePlugin -->|"Tools 调用"| Finance["现有财务系统 API"]
+        TicketPlugin -->|"Tools 调用"| ITSM["现有工单系统 API"]
     end
 
-    API -->|2. SSE 打字机流式 / 结构化卡片 / 用量元数据| User
+    API -->|"2. SSE 打字机流式 / 结构化卡片 / 用量元数据"| User
 ```
 
 ---
